@@ -15,7 +15,7 @@
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-              //abc123
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 
@@ -591,7 +591,7 @@
 	$export.B = 16;  // bind
 	$export.W = 32;  // wrap
 	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library`
+	$export.R = 128; // real proto method for `library` 
 	module.exports = $export;
 
 /***/ },
@@ -2036,7 +2036,7 @@
 	})), 'Number', {
 	  toPrecision: function toPrecision(precision){
 	    var that = aNumberValue(this, 'Number#toPrecision: incorrect invocation!');
-	    return precision === undefined ? $toPrecision.call(that) : $toPrecision.call(that, precision);
+	    return precision === undefined ? $toPrecision.call(that) : $toPrecision.call(that, precision); 
 	  }
 	});
 
@@ -2160,7 +2160,7 @@
 	$export($export.S + $export.F * !($acosh
 	  // V8 bug: https://code.google.com/p/v8/issues/detail?id=3509
 	  && Math.floor($acosh(Number.MAX_VALUE)) == 710
-	  // Tor Browser bug: Math.acosh(Infinity) -> NaN
+	  // Tor Browser bug: Math.acosh(Infinity) -> NaN 
 	  && $acosh(Infinity) == Infinity
 	), 'Math', {
 	  acosh: function acosh(x){
@@ -2191,7 +2191,7 @@
 	  return !isFinite(x = +x) || x == 0 ? x : x < 0 ? -asinh(-x) : Math.log(x + Math.sqrt(x * x + 1));
 	}
 
-	// Tor Browser bug: Math.asinh(0) -> -0
+	// Tor Browser bug: Math.asinh(0) -> -0 
 	$export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', {asinh: asinh});
 
 /***/ },
@@ -2202,7 +2202,7 @@
 	var $export = __webpack_require__(8)
 	  , $atanh  = Math.atanh;
 
-	// Tor Browser bug: Math.atanh(-0) -> 0
+	// Tor Browser bug: Math.atanh(-0) -> 0 
 	$export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
 	  atanh: function atanh(x){
 	    return (x = +x) == 0 ? x : Math.log((1 + x) / (1 - x)) / 2;
@@ -4799,7 +4799,7 @@
 	        while(index--)$instance[ADDER](index, index);
 	        return !$instance.has(-0);
 	      });
-	    if(!ACCEPT_ITERABLES){
+	    if(!ACCEPT_ITERABLES){ 
 	      C = wrapper(function(target, iterable){
 	        anInstance(target, C, NAME);
 	        var that = inheritIfRequired(new Base, target, C);
@@ -8736,7 +8736,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule reactProdInvariant
-	 *
+	 * 
 	 */
 	'use strict';
 
@@ -9314,7 +9314,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 *
+	 * 
 	 */
 
 	function makeEmptyFunction(arg) {
@@ -9559,7 +9559,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule getIteratorFn
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -9605,7 +9605,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule KeyEscapeUtils
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -14334,7 +14334,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule accumulateInto
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -14398,7 +14398,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule forEachAccumulated
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -15667,7 +15667,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule ReactFeatureFlags
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -16946,7 +16946,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule isTextInputElement
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -20413,7 +20413,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 *
+	 * 
 	 * @typechecks static-only
 	 */
 
@@ -23942,7 +23942,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule ReactNodeTypes
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -23988,7 +23988,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @typechecks
-	 *
+	 * 
 	 */
 
 	/*eslint-disable no-self-compare */
@@ -24223,7 +24223,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule flattenChildren
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -24401,7 +24401,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule ReactServerUpdateQueue
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -26550,7 +26550,7 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 *
+	 * 
 	 */
 
 	var isTextNode = __webpack_require__(443);
@@ -29067,7 +29067,7 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule adler32
-	 *
+	 * 
 	 */
 
 	'use strict';
@@ -32005,8 +32005,6 @@
 
 	var _routerWarning2 = _interopRequireDefault(_routerWarning);
 
-	var _Actions = __webpack_require__(481);
-
 	var _computeChangedRoutes2 = __webpack_require__(499);
 
 	var _computeChangedRoutes3 = _interopRequireDefault(_computeChangedRoutes2);
@@ -32053,10 +32051,6 @@
 	    }
 
 	    return (0, _isActive3.default)(location, indexOnly, state.location, state.routes, state.params);
-	  }
-
-	  function createLocationFromRedirectInfo(location) {
-	    return history.createLocation(location, _Actions.REPLACE);
 	  }
 
 	  var partialNextState = void 0;
@@ -32116,7 +32110,7 @@
 	    }
 
 	    function handleErrorOrRedirect(error, redirectInfo) {
-	      if (error) callback(error);else callback(null, createLocationFromRedirectInfo(redirectInfo));
+	      if (error) callback(error);else callback(null, redirectInfo);
 	    }
 	  }
 
@@ -32279,7 +32273,7 @@
 	          if (error) {
 	            listener(error);
 	          } else if (redirectLocation) {
-	            history.transitionTo(redirectLocation);
+	            history.replace(redirectLocation);
 	          } else if (nextState) {
 	            listener(null, nextState);
 	          } else {
@@ -33447,7 +33441,7 @@
 	  },
 
 	  propTypes: {
-	    to: oneOfType([string, object]).isRequired,
+	    to: oneOfType([string, object]),
 	    query: object,
 	    hash: string,
 	    state: object,
@@ -33508,6 +33502,11 @@
 
 
 	    if (router) {
+	      // If user does not specify a `to` prop, return an empty anchor tag.
+	      if (to == null) {
+	        return _react2.default.createElement('a', props);
+	      }
+
 	      var location = createLocationDescriptor(to, { query: query, hash: hash, state: state });
 	      props.href = router.createHref(location);
 
@@ -34262,6 +34261,8 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+	var _Actions = __webpack_require__(481);
+
 	var _invariant = __webpack_require__(477);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
@@ -34320,7 +34321,7 @@
 	  history = (0, _RouterUtils.createRoutingHistory)(history, transitionManager);
 
 	  transitionManager.match(location, function (error, redirectLocation, nextState) {
-	    callback(error, redirectLocation, nextState && _extends({}, nextState, {
+	    callback(error, redirectLocation && router.createLocation(redirectLocation, _Actions.REPLACE), nextState && _extends({}, nextState, {
 	      history: history,
 	      router: router,
 	      matchContext: { history: history, transitionManager: transitionManager, router: router }
@@ -35077,10 +35078,6 @@
 
 	var _Index2 = _interopRequireDefault(_Index);
 
-	var _PartyParrot = __webpack_require__(552);
-
-	var _PartyParrot2 = _interopRequireDefault(_PartyParrot);
-
 	var _reactRouter = __webpack_require__(469);
 
 	var _reactStormpath = __webpack_require__(535);
@@ -35097,8 +35094,7 @@
 	    _react2.default.createElement(_reactStormpath.LogoutRoute, { path: '/logout' }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/create', component: _CreateEvent2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/eventDetails', component: _EventDetails2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/profile', component: _UserDetails2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/partyMode', component: _PartyParrot2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/profile', component: _UserDetails2.default })
 	  )
 	);
 
@@ -39019,7 +39015,7 @@
 		 * of patent rights can be found in the PATENTS file in the same directory.
 		 *
 		 * @providesModule Dispatcher
-		 *
+		 * 
 		 * @preventMunge
 		 */
 
@@ -49687,7 +49683,7 @@
 /* 539 */
 /***/ function(module, exports, __webpack_require__) {
 
-
+	
 	/**
 	 * Expose `Emitter`.
 	 */
@@ -51739,202 +51735,6 @@
 	}(_react2.default.Component);
 
 	exports.default = Logo;
-
-/***/ },
-/* 552 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(299);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _pictureFall = __webpack_require__(553);
-
-	var _pictureFall2 = _interopRequireDefault(_pictureFall);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var UserDetails = function (_React$Component) {
-	  _inherits(UserDetails, _React$Component);
-
-	  function UserDetails() {
-	    _classCallCheck(this, UserDetails);
-
-	    return _possibleConstructorReturn(this, (UserDetails.__proto__ || Object.getPrototypeOf(UserDetails)).call(this));
-	  }
-
-	  _createClass(UserDetails, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        $('div').css('visibility', 'visible'),
-	        ' ',
-	        $("body").append('<img src="http://assets.marthastewart.com/styles/wmax-1500/d45/party-table-decoration-centerpiece-horiz-0824/party-table-decoration-centerpiece-horiz-0824_horiz.jpg?itok=wS9Mo61r.jpg" width ="100%" height="100%"></img> <audio autoplay="true" src="https://s3-us-west-1.amazonaws.com/hr-mytunes/data/04+One+In+A+Million.mp3">')
-	      );
-	    }
-	  }]);
-
-	  return UserDetails;
-	}(_react2.default.Component);
-
-	exports.default = UserDetails;
-
-/***/ },
-/* 553 */
-/***/ function(module, exports) {
-
-	/*   Free Script provided by HIOXINDIA            */
-	/*   visit us at http://www.hscripts.com     */
-	/*   This is a copyright product of hioxindia.com */
-
-	var images=["http://cultofthepartyparrot.com/sirocco.gif","http://cultofthepartyparrot.com/parrots/partyparrot.gif","http://cultofthepartyparrot.com/parrots/middleparrot.gif","http://emojis.slackmojis.com/emojis/images/1471119456/982/fiesta_parrot.gif?1471119456","http://cultofthepartyparrot.com/parrots/parrotdad.gif"];  //Image path should be given here
-	var no = 55; // No of images should fall
-	var time = 0; // Configure whether image should disappear after x seconds (0=never):
-	var speed = 10; // Fix how fast the image should fall
-	var i, dwidth = 300, dheight = 300;
-	var nht = dheight;
-	var toppos = 0;
-	var t = 1;
-	window.animation = animation;
-	if(document.all){
-		var ie4up = 1;
-	}else{
-		var ie4up = 0;
-	}
-
-	if(document.getElementById && !document.all){
-		var ns6up = 1;
-	}else{
-		var ns6up = 0;
-	}
-
-	function getScrollXY() {
-	  var scrOfX = 10, scrOfY = 10;
-	  if( typeof( window.pageYOffset ) == 'number' ) {
-	    //Netscape compliant
-	    scrOfY =window.pageYOffset;
-	    scrOfX = window.pageXOffset;
-	  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
-	    //DOM compliant
-	    scrOfY = document.body.scrollTop;
-	    scrOfX = document.body.scrollLeft;
-	  } else if( document.documentElement &&
-	      ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
-	    //IE6 standards compliant mode
-	   scrOfY = document.documentElement.scrollTop;
-	   scrOfX = document.documentElement.scrollLeft;
-	  }
-	  return [ scrOfX, scrOfY ];
-	}
-
-	var timer;
-
-	function ranrot()
-	{
-
-	var a = getScrollXY()
-	if(timer)
-	{
-		clearTimeout(timer);
-	}
-	toppos = a[1];
-	dheight = nht+a[1];
-	//alert(dheight);
-
-	timer = setTimeout('ranrot()',2000);
-	}
-
-	ranrot();
-
-	function iecompattest()
-	{
-		if(document.compatMode && document.compatMode!="BackCompat")
-		{
-			return document.documentElement;
-		}else{
-			return document.body;
-		}
-
-	}
-	if (ns6up) {
-		dwidth = window.innerWidth;
-		dheight = window.innerHeight;
-	}
-	else if (ie4up) {
-		dwidth = iecompattest().clientWidth;
-		dheight = iecompattest().clientHeight;
-	}
-
-	nht = dheight;
-
-	var cv = new Array();
-	var px = new Array();       //position variables
-	var py = new Array();      //position variables
-	var am = new Array();     //amplitude variables
-	var sx = new Array();    //step variables
-	var sy = new Array();   //step variables
-
-	for (i = 0; i < no; ++ i) {
-		cv[i] = 0;
-		px[i] = Math.random()*(dwidth-100);  // set position variables
-		py[i] = Math.random()*dheight;     // set position variables
-		am[i] = Math.random()*20;         // set amplitude variables
-		sx[i] = 0.02 + Math.random()/10;  // set step variables
-		sy[i] = 0.7 + Math.random();    // set step variables
-	//TOP: 15px;LEFT: 15px;
-		document.write("<div id=\"dot"+ i +"\" style=\"POSITION: absolute; Z-INDEX: "+ i +"; VISIBILITY: hidden; \"><img src='"+images[Math.floor(Math.random()*images.length)]+"' border=\"0\"><\/div>");
-	}
-
-	function animation() {  // animation function
-		for (i = 0; i < no; ++ i) {  // iterate for every dot
-			py[i] += sy[i];
-	      		if (py[i] > dheight-50) {
-	        		px[i] = Math.random()*(dwidth-am[i]-100);
-	        		py[i] = toppos;
-	        		sx[i] = 0.02 + Math.random()/10;
-	        		sy[i] = 0.7 + Math.random();
-	      		}
-	      		cv[i] += sx[i];
-	      		document.getElementById("dot"+i).style.top=py[i]+"px";
-	      		document.getElementById("dot"+i).style.left=px[i] + am[i]*Math.sin(cv[i])+"px";
-	    	}
-	    	atime=setTimeout("animation()", speed);
-
-	}
-
-	function hideimage(){
-		if (window.atime) clearTimeout(atime)
-			for (i=0; i < no; i++)
-				document.getElementById("dot"+i).style.visibility="hidden"
-	}
-	if (ie4up||ns6up){
-	animation();
-	if (time>0)
-		setTimeout("hideimage()", time*1000)
-	}
-	animation();
-
-	/*   Free Script provided by HIOXINDIA            */
-	/*   visit us at http://www.hscripts.com     */
-	/*   This is a copyright product of hioxindia.com */
-
-
 
 /***/ }
 /******/ ]);
