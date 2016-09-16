@@ -2,8 +2,8 @@ import React from 'react';
 
 
 export default class EventDetails extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       shortenedUrl: 'Promotion URL',
@@ -12,11 +12,13 @@ export default class EventDetails extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this.bitlyShortenLink(this.props.event.eventbrite.url);
-    this.bitlyGetUsername();
-  }
   componentDidMount() {
+    this.getUsername();
+    console.log(this.props.event.eventbrite.url + "?camid=" + this.state.username)
+    this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username); // need to customize url per person
+    this.bitlyGetUsername();
+
+
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
 
@@ -41,7 +43,8 @@ export default class EventDetails extends React.Component {
               <div className="card card-block">
                 <h4 className="card-title">Start Promoting Now!</h4>
                 <hr />
-                <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Promote with <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /></button>
+                // here we should check if the is link for user in db, if so display that, if not get one
+                <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Get your <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /> link</button>
                 <hr />
                 <input className="inputId" value={this.state.shortenedUrl} />
               </div>
@@ -129,14 +132,22 @@ export default class EventDetails extends React.Component {
     )
   }
 
+  getShortUrl() {
+    // check if bitly url exists for this user and eventbrite-event === cam.io event
+      // display existing bitly url
+    // else
+      // this.bitlyShortenLink(long URL + userid)
+  }
+
   bitlyShortenLink(currenturl) {
-    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
+    console.log("currenturl:", currenturl)
+    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35"; //change access tokens
 
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + currenturl + "&format=txt",
       type: 'GET',
       success: (data) => {
-        this.setState({shortenedUrl: data});
+        this.setState({shortenedUrl: data}); 
         console.log('data bitlyShortenLink ', data);
       },
       error: (data) => {
@@ -159,6 +170,20 @@ export default class EventDetails extends React.Component {
         console.error('Failed to get link clicks. Error: ', data);
       }
     });
+  }
+
+  // get username
+  getUsername() {
+    $.ajax({
+      url: '/secrets',
+      type: 'GET',
+      success: (username) => {
+        this.setState({ username: username });
+      },
+      error: function(err) {
+        console.log("Error: ", err)
+      }
+    })
   }
 
   bitlyGetUsername() {
