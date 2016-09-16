@@ -89,13 +89,22 @@ body {
   width:30%;
 }
 
+.inputEventInfoDate {
+  outline:none;
+  padding:10px;
+  border:4px #ddd solid;
+  color:#999;
+  font-size:20px;
+  vertical-align:top
+}
+
 .inputId {
   width: 80%;
 }
 
 .scrollBox {
   overflow:auto;
-  height:300px;
+  height:1000px;
 }
 
 footer.page-footer {
