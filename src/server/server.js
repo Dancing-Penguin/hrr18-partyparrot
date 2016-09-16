@@ -7,6 +7,7 @@ var stormpath = require('express-stormpath');
 var Eventbrite = require('eventbrite-node');
 var config = require('../config/eventbrite');
 var Event = require('./models/event');
+var Promo = require('./models/promo');
 var client = new Eventbrite(config.clientKey, config.clientSecret);
 
 //Alias for heroku ports/db vs local
@@ -75,6 +76,42 @@ app.get('/secrets', stormpath.loginRequired, function(req,res){
   console.log(req.user.username)
   res.json(req.user.username);
 })
+
+
+// Will return array of all promoters for a specified event
+// returns [{promoter: "username", event: "eventname", link: "bitlyLink"}]
+app.get('/promoters', stormpath.loginRequired, function(req, res){
+  Promo.find({'event': req.body.event}, function(err, promos){
+    if (err) {
+      console.log("Error: ", err);
+      res.status(500).send({error: err});
+    } else {
+      res.json(promos);
+    }
+  });
+});
+// Note that the username returned will be each person's email
+// Will need to refactor to return actual names with additional db query
+
+
+// Adds new entry to promo table for event/promoter combo with unique link
+// Expects {event: "eventname", link: "bitlyLink"}
+app.post('/promoter', stormpath.loginRequired, function(req, res){
+  var newPromoter = req.body;
+  newPromoter.promoter = req.user.username
+
+  Promo.create(newPromoter, function(err, promo){
+    if (err) {
+      console.log("Error: ", err);
+      res.status(500).send({error: err});
+    } else {
+      res.status(200);
+    }
+  })
+});
+
+
+
 
 
 // If no app.get path was found for request, this is the default, which will
