@@ -44,9 +44,9 @@ app.post('/create',stormpath.loginRequired, function(req,res){
   gPoint: req.body.gPoint,
   gReward: req.body.gReward,
   sPoint: req.body.sPoint,
-  sReward: req.body.gReward,
+  sReward: req.body.sReward,
   bPoint: req.body.bPoint,
-  bReward: req.body.gReward,
+  bReward: req.body.bReward,
   eventbrite: req.body.event
   });
   event.save(function (err, post) {
