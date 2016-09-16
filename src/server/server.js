@@ -117,9 +117,6 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
 // returns {promoter: "username", event: "eventname", link: "bitlyLink"}
 // or returns null if user is not a promoter for the event
 app.get('/promoter', stormpath.loginRequired, function(req, res){
-  var promoterObj = req.body;
-  promoterObj.promo
-
   Promo.find({'event': req.body.event, 'promoter': req.user.username}, function(err, promo){
     if (err) {
       console.log("Error: ", err);
