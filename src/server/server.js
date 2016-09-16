@@ -79,6 +79,7 @@ app.get('/secrets', stormpath.loginRequired, function(req,res){
 
 
 // Will return array of all promoters for a specified event
+// Expects {event: "eventname"}
 // returns [{promoter: "username", event: "eventname", link: "bitlyLink"}]
 app.get('/promoters', stormpath.loginRequired, function(req, res){
   Promo.find({'event': req.body.event}, function(err, promos){
@@ -97,10 +98,10 @@ app.get('/promoters', stormpath.loginRequired, function(req, res){
 // Adds new entry to promo table for event/promoter combo with unique link
 // Expects {event: "eventname", link: "bitlyLink"}
 app.post('/promoter', stormpath.loginRequired, function(req, res){
-  var newPromoter = req.body;
-  newPromoter.promoter = req.user.username
+  var newPromoterObj = req.body;
+  newPromoterObj.promoter = req.user.username
 
-  Promo.create(newPromoter, function(err, promo){
+  Promo.create(newPromoterObj, function(err, promo){
     if (err) {
       console.log("Error: ", err);
       res.status(500).send({error: err});
@@ -111,7 +112,28 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
 });
 
 
+// Will return a single promoter object for a specified event if found
+// Expects {event: "eventname"}
+// returns {promoter: "username", event: "eventname", link: "bitlyLink"}
+// or returns null if user is not a promoter for the event
+app.get('/promoter', stormpath.loginRequired, function(req, res){
+  var promoterObj = req.body;
+  promoterObj.promo
 
+  Promo.find({'event': req.body.event, 'promoter': req.user.username}, function(err, promo){
+    if (err) {
+      console.log("Error: ", err);
+      res.status(500).send({error: err});
+    } else {
+      if (!promo) { // current user is not a promoter for this event
+        res.json(null);
+      } else {
+        res.json(promo);
+      }
+    }
+  })
+})
+// Not sure if this will be needed
 
 
 // If no app.get path was found for request, this is the default, which will
