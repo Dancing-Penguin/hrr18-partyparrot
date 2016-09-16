@@ -3,11 +3,12 @@ import CategoryList from './CategoryList'
 import Logo from './Logo'
 
 export default class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render () {
+    // console.log("index.js:", this.props)
     return (
       <div className="index">
         <Logo />

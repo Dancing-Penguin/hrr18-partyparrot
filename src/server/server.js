@@ -70,10 +70,10 @@ app.get('/userEvents', stormpath.loginRequired, function(req,res) {
   })
 })
 
-// This is only a test to see if the user is authenticated, and not needed
-// for this project.
+// This is a hack to pass over username from stormpath to client side
 app.get('/secrets', stormpath.loginRequired, function(req,res){
-  res.send('Hi ' + req.user.givenName);
+  console.log(req.user.username)
+  res.json(req.user.username);
 })
 
 
