@@ -132,7 +132,7 @@ export default class Event extends React.Component {
   }
 
   bitlyShortenLink(currenturl) {
-    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + currenturl + "&format=txt",
@@ -148,7 +148,7 @@ export default class Event extends React.Component {
   }
 
   bitlyLinkClicks(linkclicksurl) {
-    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + linkclicksurl,
@@ -164,7 +164,7 @@ export default class Event extends React.Component {
   }
 
   bitlyGetUsername() {
-    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/user/info?access_token=" + ACCESS_TOKEN,
