@@ -44,9 +44,9 @@ app.post('/create',stormpath.loginRequired, function(req,res){
   gPoint: req.body.gPoint,
   gReward: req.body.gReward,
   sPoint: req.body.sPoint,
-  sReward: req.body.gReward,
+  sReward: req.body.sReward,
   bPoint: req.body.bPoint,
-  bReward: req.body.gReward,
+  bReward: req.body.bReward,
   eventbrite: req.body.event
   });
   event.save(function (err, post) {
@@ -117,9 +117,6 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
 // returns {promoter: "username", event: "eventname", link: "bitlyLink"}
 // or returns null if user is not a promoter for the event
 app.get('/promoter', stormpath.loginRequired, function(req, res){
-  var promoterObj = req.body;
-  promoterObj.promo
-
   Promo.find({'event': req.body.event, 'promoter': req.user.username}, function(err, promo){
     if (err) {
       console.log("Error: ", err);
