@@ -13,11 +13,8 @@ export default class EventDetails extends React.Component {
   }
 
   componentDidMount() {
-    this.getUsername();
-    console.log(this.props.event.eventbrite.url + "?camid=" + this.state.username)
-    this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username); // need to customize url per person
-    this.bitlyGetUsername();
 
+    this.getUsername();
 
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
@@ -132,15 +129,8 @@ export default class EventDetails extends React.Component {
     )
   }
 
-  getShortUrl() {
-    // check if bitly url exists for this user and eventbrite-event === cam.io event
-      // display existing bitly url
-    // else
-      // this.bitlyShortenLink(long URL + userid)
-  }
-
   bitlyShortenLink(currenturl) {
-    console.log("currenturl:", currenturl)
+    // console.log("currenturl:", currenturl)
     var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35"; //change access tokens
 
     $.ajax({
@@ -148,7 +138,7 @@ export default class EventDetails extends React.Component {
       type: 'GET',
       success: (data) => {
         this.setState({shortenedUrl: data}); 
-        console.log('data bitlyShortenLink ', data);
+        // console.log('data bitlyShortenLink ', data);
       },
       error: (data) => {
         console.error('Failed to get shortened URL. Error: ', data);
@@ -178,7 +168,10 @@ export default class EventDetails extends React.Component {
       url: '/secrets',
       type: 'GET',
       success: (username) => {
+        // save username on state
         this.setState({ username: username });
+        // create bitly url unique to this eventbriteURL + this user
+        this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username)
       },
       error: function(err) {
         console.log("Error: ", err)
@@ -186,20 +179,21 @@ export default class EventDetails extends React.Component {
     })
   }
 
-  bitlyGetUsername() {
-    var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
+  // // This doesn't seem needed
+  // bitlyGetUsername() {
+  //   var ACCESS_TOKEN = "33edd09b64804a5a8f80eacf8e7ff583ae0b0b35";
 
-    $.ajax({
-      url: "https://api-ssl.bitly.com/v3/user/info?access_token=" + ACCESS_TOKEN,
-      type: 'GET',
+  //   $.ajax({
+  //     url: "https://api-ssl.bitly.com/v3/user/info?access_token=" + ACCESS_TOKEN,
+  //     type: 'GET',
 
-      success: (data) => {
-        this.setState({username: data.data.full_name});
-      },
-      error: (data) => {
-        console.error('Failed to get bitly username. Error: ', data);
-      }
-    });
-  }
+  //     success: (data) => {
+  //       this.setState({username: data.data.full_name});
+  //     },
+  //     error: (data) => {
+  //       console.error('Failed to get bitly username. Error: ', data);
+  //     }
+  //   });
+  // }
 
 }

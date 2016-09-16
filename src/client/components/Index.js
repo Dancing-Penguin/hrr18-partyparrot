@@ -8,7 +8,7 @@ export default class App extends React.Component {
   }
 
   render () {
-    console.log("index.js:", this.props)
+    // console.log("index.js:", this.props)
     return (
       <div className="index">
         <Logo />
