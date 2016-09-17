@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './components/App';
 import CreateEvent from './components/CreateEvent';
+import EventPromoter from './components/EventPromoter';
 import EventDetails from './components/EventDetails';
 import UserDetails from './components/UserDetails';
 import Index from './components/Index';
