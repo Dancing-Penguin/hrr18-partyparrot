@@ -82,8 +82,8 @@ app.get('/secrets', stormpath.loginRequired, function(req,res){
 // Will return array of all promoters for a specified event
 // Expects {event: "eventname"}
 // returns [{promoter: "username", event: "eventname", link: "bitlyLink"}]
-app.get('/promoters', stormpath.loginRequired, function(req, res){
-  Promo.find({'event': req.body.event}, function(err, promos){
+app.get('/promoters/:event', stormpath.loginRequired, function(req, res){
+  Promo.find({'event': req.params.event}, function(err, promos){
     if (err) {
       console.log("Error: ", err);
       res.status(500).send({error: err});

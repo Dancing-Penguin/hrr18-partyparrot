@@ -21,6 +21,7 @@ export default class EventDetails extends React.Component {
     console.log("eventid", this.state.eventid)
 
     this.getUsername();
+    this.getPromoters(this.state.eventid)
 
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
@@ -137,15 +138,14 @@ export default class EventDetails extends React.Component {
 
   // get promoters
   getPromoters(eventid) {
-    var data = {event: eventid}
     $.ajax({
-      url: '/promoters',
+      url: '/promoters/' + eventid,
       type: 'GET',
       contentType: 'application/json',
-      data: JSON.stringify(data),
 
       success: (result) => {
-        this.setState({promoters: data})
+        this.setState({promoters: result})
+        console.log(this.state)
       },
       error: (err) => {
         console.log("err0r:", err)
