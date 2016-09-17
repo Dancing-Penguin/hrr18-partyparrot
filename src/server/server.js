@@ -10,6 +10,7 @@ var Event = require('./models/event');
 var User = require('./models/user');
 var Promo = require('./models/promo');
 var client = new Eventbrite(config.clientKey, config.clientSecret);
+var moment = require('moment');
 
 //Alias for heroku ports/db vs local
 var PORT = process.env.PORT || 8080;
@@ -63,12 +64,14 @@ app.get('/events',stormpath.loginRequired, function (req, res, next) {
     res.json(events);
   })
   // Create user object with all of user's info
+  var createdAt = moment(req.user.createdAt.slice(0,10));
+  console.log('$$$$$ createdAt with moment: ', createdAt);
   var user = new User({
     username: req.user.username,
     firstName: req.user.givenName,
     lastName: req.user.surname,
     fullName: req.user.fullName,
-    memberSince: req.user.createdAt
+    memberSince: createdAt
   });
   // Check User Model for User. If !User, then save.
   User.findOne({username: req.user.username}, function(err,doc){
