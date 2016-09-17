@@ -17,34 +17,53 @@ export default class CreateEvent extends React.Component {
 
 //add start date, end date
   render () {
+    var preStyle = {
+      marginBottom: 5
+    }
     var events = this.state.events.map(eventEntry => {
-        return (
-          <li style={{"marginTop":"20px"}} onClick={ () => this.selectEvent(eventEntry) }>
-            <img src={eventEntry.logo ? eventEntry.logo.url : "http://130.211.52.161/tradeo-content/themes/nucleare-pro/images/no-image-box.png"} style={{"width":"100px", 'marginRight':'10px', "borderRadius":'5px'}} alt="" />
-            <a>{eventEntry.name.html}</a>
-            <p>{eventEntry.venue.address.localized_address_display}</p>
-            <p>Start Date: {eventEntry.start.local} {eventEntry.start.timezone}</p>
-            <p>End Date: {eventEntry.end.local} {eventEntry.end.timezone}</p>
-          </li>
-        )
+      var startTime = eventEntry.start.local.replace('T', '  ');
+      var endTime = eventEntry.end.local.replace('T', '  ');
+      return (
+        <li style={{"marginTop":"20px"}} onClick={ () => this.selectEvent(eventEntry) }>
+          <img src={eventEntry.logo ? eventEntry.logo.url : "http://130.211.52.161/tradeo-content/themes/nucleare-pro/images/no-image-box.png"} style={{"width":"100px", 'marginRight':'10px', "borderRadius":'5px'}} alt="" />
+          <a><b>{eventEntry.name.html}</b></a>
+          <pre style={preStyle}>Address:     {eventEntry.venue.address.localized_address_display} </pre>
+          <pre style={preStyle}>Start Time:  {startTime} {eventEntry.start.timezone} </pre>
+          <pre style={preStyle}>End Time:    {endTime} {eventEntry.end.timezone} </pre>
+        </li>
+      )
     });
+            //<p>Address: {eventEntry.venue.address.localized_address_display}</p>
+            //<p>Start Date: {eventEntry.start.local} {eventEntry.start.timezone}</p>
+            //<p>End Date: {eventEntry.end.local} {eventEntry.end.timezone}</p>
 
-    //Replace the part below with NavBar to save some space on the page
 
-    // <div className="view hm-black-light">
-    //     <img src="img/pattern.png" alt=""/>
-    //     <div className="mask flex-center">
-    //       <h1 className="white-text h1-responsive">Create Your Event</h1>
-    //     </div>
-    //   </div>
 
+    // var dateStyle = {
+    //   height: 30,
+    //   width: '26.83%',
+    //   outline:'none',
+    //   padding:10,
+    //   border:'4px #ddd solid',
+    //   color:'#999',
+    //   fontSize:20,
+    //   verticalAlign:'top'
+    // };
+
+
+    //<NavBar />
+    //<h1 className="white-text h1-responsive">Create Your Event</h1>
     if(!this.state.submitted){
     return (
       <div className='create-event'>
+      <div className="view hm-black-light">
+        <img src="img/pattern.png" alt=""/>
+        <div className="mask flex-center">
+          <h1 className="white-text h1-responsive">Create Your Event</h1>
+        </div>
+      </div>
 
-        <NavBar />
-        <h1 className="white-text h1-responsive">Create Your Event</h1>
-        <div className="wide text-md-center" style={{"marginTop":"70px"}}>
+        <div className="wide text-md-center" style={{"marginTop":"30px"}}>
           <h2 className="h2-responsive">Search Your Event On Eventbrite</h2>
           <div className="row margin-top">
             <h3 className="h3-responsive">By Name</h3>
@@ -52,8 +71,8 @@ export default class CreateEvent extends React.Component {
             <form style={{ 'width':'100%' }}>
               <input className="inputEventInfo" placeholder="Event Keyword..." ref ={ (input) => this.searchByName = input } />
               <input className="inputEventInfo" placeholder="Event City..." style={{ 'borderLeft':'none' }} ref ={ (input) => this.searchByCity = input } />
-              <input className="inputEventInfoDate" type="date" placeholder="Event Start Date" ref ={ (input) => this.searchByStartDate = input } />
-              <input className="inputEventInfoDate" type="date" placeholder="Event End Date" ref ={ (input) => this.searchByEndDate = input } />
+              <input className="inputEventInfo" placeholder="Event Start Date" ref ={ (input) => this.searchByStartDate = input } />
+              <input className="inputEventInfo" placeholder="Event End Date" ref ={ (input) => this.searchByEndDate = input } />
               <button className="searchBtn" type='button' onClick = { () => this.search(this.searchByName.value, this.searchByCity.value, this.searchByStartDate.value, this.searchByEndDate.value) }><i className="material-icons" style={{"marginTop":"3px", "color":"#666"}}>search</i></button>
             </form>
             <div className="col-xs-12">
@@ -66,6 +85,7 @@ export default class CreateEvent extends React.Component {
                 </ul>
               </div>
             </div>
+            <div id='map'></div>
             <div className="col-xs-12">
               <hr />
               <h2 className="h2-responsive">Prizes</h2>
@@ -143,10 +163,19 @@ export default class CreateEvent extends React.Component {
   }
 
   search(query, city, startDate, endDate){
+    var url = '';
     var s = startDate + 'T00:00:00Z';
     var e = endDate + 'T00:00:00Z';
     console.log('eventbrite date', s, e);
-    var url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&start_date.range_start=${s}&start_date.range_end=${e}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
+    if(!startDate && !endDate) {
+      url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
+    } else if(!startDate) {
+      url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&start_date.range_end=${e}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
+    } else if(!endDate) {
+      url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&start_date.range_start=${s}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
+    } else {
+      url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&start_date.range_start=${s}&start_date.range_end=${e}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
+    }
     Request.get(url).then((response) => {
       console.log('Everbrite', response.body.events);
       this.setState({
