@@ -108,10 +108,11 @@ app.get('/secrets', stormpath.loginRequired, function(req,res){
 
 
 // Will return array of all promoters for a specified event
-// Expects {event: "eventname"}
-// returns [{promoter: "username", event: "eventname", link: "bitlyLink"}]
+// Expects "/eventid" in the url
+// returns [{link: "bitlyLink", fullName: "Full Name"}]
+// returns empty array [] if no promoters
 app.get('/promoters/:event', stormpath.loginRequired, function(req, res){
-  Promo.find({'event': req.params.event}, function(err, promos){
+  Promo.find({'event': req.params.event}, 'link fullName', function(err, promos){
     if (err) {
       console.log("Error: ", err);
       res.status(500).send({error: err});
@@ -120,15 +121,14 @@ app.get('/promoters/:event', stormpath.loginRequired, function(req, res){
     }
   });
 });
-// Note that the username returned will be each person's email
-// Will need to refactor to return actual names with additional db query
 
 
 // Adds new entry to promo table for event/promoter combo with unique link
 // Expects {event: "eventname", link: "bitlyLink"}
 app.post('/promoter', stormpath.loginRequired, function(req, res){
   var newPromoterObj = req.body;
-  newPromoterObj.promoter = req.user.username
+  newPromoterObj.promoter = req.user.username;
+  newPromoterObj.fullName = req.user.fullName;
 
   Promo.create(newPromoterObj, function(err, promo){
     if (err) {
@@ -137,12 +137,12 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
     } else {
       res.status(200);
     }
-  })
+  });
 });
 
 
 // Will return a single promoter object for a specified event
-// Expects {event: "eventid"}
+// Expects "/eventid" in the url
 // if already a promoter, returns {link: "bitlyLink"}
 // if not yet a promoter, returns {userid: 'id', link: null}
 app.get('/promoter/:event', stormpath.loginRequired, function(req, res){
