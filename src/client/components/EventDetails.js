@@ -97,7 +97,7 @@ export default class EventDetails extends React.Component {
                     <tbody>
                       {this.state.formatPromoters.map((promoter) => 
                         <tr key={++this.state.zero}>
-                          <td>{promoter.promoter}</td><td>{promoter.clickCount}</td>
+                          <td>{promoter.fullName}</td><td>{promoter.clickCount}</td>
                         </tr>)}
                     </tbody>
                   </table>
@@ -222,8 +222,9 @@ export default class EventDetails extends React.Component {
           // set state
           this.setState({shortenedUrl: result.link})
         } else {
+          this.setState({userid: result.userid})
           // make bitly link (unique for this eventbrite URL + this userid)
-          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later result.userid
+          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + result.userid)
         }
       },
       error: (err) => {
@@ -275,7 +276,7 @@ export default class EventDetails extends React.Component {
 
   componentWillMount() {
 
-    console.log("eventid", this.state.eventid)
+    console.log("state", this.state)
     this.getUsername();
     this.getPromoters(this.state.eventid)
     console.log("promoters:", this.state.promoters)
