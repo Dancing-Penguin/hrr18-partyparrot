@@ -8,7 +8,17 @@ export default class App extends React.Component {
     this.state = {
       events: [],
       categories: [],
-      selectedEvent: {}
+      selectedEvent: {},
+      catImg: {
+        102: "https://i.ytimg.com/vi/qHbkufKpFF0/maxresdefault.jpg", //sciece+tech
+        110: "http://vignette3.wikia.nocookie.net/uncyclopedia/images/9/9d/SuperFancyRestaurant.jpg/revision/latest?cb=20151230201557",//food & drink
+        103: "http://mediafarmersmarket.com/wp-content/uploads/2016/08/music-colour-splash.jpg",//music
+        108: "http://statplot.com/wp-content/uploads/2014/11/StatPlot-Sports-Stats.jpg",//sports
+        119: "http://www.skillbus.co/wp-content/uploads/2015/06/PhotographyMasterclassImage.jpg",//hobbies & special interest
+        101: "http://www.aurameir.com/wp-content/uploads/2016/08/Business_Incubation_Startup.jpg",//business
+        111: "http://innevation.switchltd.netdna-cdn.com/wp-content/uploads/2016/02/Charity.jpg",//charity
+        118: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Subaru_Impreza_22B_STi-Version.jpg"//auto
+      }
     }
   }
 
@@ -59,7 +69,7 @@ createCategoryList() {
                 id: categories[categories.length-1] ? categories[categories.length-1].id + 1 : 1,
                 title: category.name,
                 categoryId: category.id,
-                imgUrl: 'http://www.miamiandbeaches.com/~/media/images/miamiandbeaches/plan-your-trip/gettingaround/miami-from-ft-lauderdale/causeway-miami-skyline-612x338.jpg'
+                imgUrl: this.state.catImg[category_id] || 'http://www.miamiandbeaches.com/~/media/images/miamiandbeaches/plan-your-trip/gettingaround/miami-from-ft-lauderdale/causeway-miami-skyline-612x338.jpg'
               });
               done.push(category.id)
               this.setState({
