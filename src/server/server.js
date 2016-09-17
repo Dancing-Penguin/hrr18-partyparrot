@@ -7,6 +7,7 @@ var stormpath = require('express-stormpath');
 var Eventbrite = require('eventbrite-node');
 var config = require('../config/eventbrite');
 var Event = require('./models/event');
+var User = require('./models/user');
 var Promo = require('./models/promo');
 var client = new Eventbrite(config.clientKey, config.clientSecret);
 
@@ -112,25 +113,31 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
 });
 
 
-// Will return a single promoter object for a specified event if found
-// Expects {event: "eventname"}
-// returns {promoter: "username", event: "eventname", link: "bitlyLink"}
-// or returns null if user is not a promoter for the event
+// Will return a single promoter object for a specified event
+// Expects {event: "eventid"}
+// if already a promoter, returns {link: "bitlyLink"}
+// if not yet a promoter, returns {userid: 'id', link: null}
 app.get('/promoter', stormpath.loginRequired, function(req, res){
-  Promo.find({'event': req.body.event, 'promoter': req.user.username}, function(err, promo){
+  Promo.findOne({'event': req.body.event, 'promoter': req.user.username}, 'link', function(err, promo){
     if (err) {
       console.log("Error: ", err);
       res.status(500).send({error: err});
     } else {
       if (!promo) { // current user is not a promoter for this event
-        res.json(null);
-      } else {
-        res.json(promo);
+        User.findOne({'username': req.user.username}, function(err, user){
+          if (err) {
+            console.log("Error: ", err);
+            res.status(500).send({error: err});
+          } else {  // return userid and bitly link
+            res.json({'userid': user['_id'], 'link': null});
+          }
+        });
+      } else { // return bitly link
+        res.json({'link': promo.link});
       }
     }
-  })
-})
-// Not sure if this will be needed
+  });
+});
 
 
 // If no app.get path was found for request, this is the default, which will
