@@ -193,7 +193,7 @@ export default class EventDetails extends React.Component {
   saveBitly(bitlyLink) {
     console.log("preparing to save bitly link to db")
     var data = {
-      eventname: this.state.eventid,
+      event: this.state.eventid,
       link: bitlyLink
     }
     console.log(data)
