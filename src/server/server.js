@@ -74,7 +74,7 @@ app.get('/userEvents', stormpath.loginRequired, function(req,res) {
 
 // This is a hack to pass over username from stormpath to client side
 app.get('/secrets', stormpath.loginRequired, function(req,res){
-  console.log(req.user.username)
+  // console.log(req.user.username)
   res.json(req.user.username);
 })
 
@@ -117,8 +117,8 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
 // Expects {event: "eventid"}
 // if already a promoter, returns {link: "bitlyLink"}
 // if not yet a promoter, returns {userid: 'id', link: null}
-app.get('/promoter', stormpath.loginRequired, function(req, res){
-  Promo.findOne({'event': req.body.event, 'promoter': req.user.username}, 'link', function(err, promo){
+app.get('/promoter/:event', stormpath.loginRequired, function(req, res){
+  Promo.findOne({'event': req.params.event, 'promoter': req.user.username}, 'link', function(err, promo){
     if (err) {
       console.log("Error: ", err);
       res.status(500).send({error: err});
@@ -129,7 +129,8 @@ app.get('/promoter', stormpath.loginRequired, function(req, res){
             console.log("Error: ", err);
             res.status(500).send({error: err});
           } else {  // return userid and bitly link
-            res.json({'userid': user['_id'], 'link': null});
+            res.json({'userid': 123456789, 'link': null}); //this is temporary fake
+            // res.json({'userid': user['_id'], 'link': null});
           }
         });
       } else { // return bitly link

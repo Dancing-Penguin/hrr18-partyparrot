@@ -180,7 +180,7 @@ export default class EventDetails extends React.Component {
         // save username on state
         this.setState({username: username});
         // find bitly
-        this.findBitly({event:this.state.eventid})
+        this.findBitly(this.state.eventid)
 
       },
       error: function(err) {
@@ -191,24 +191,18 @@ export default class EventDetails extends React.Component {
 
   // check user db if bitly already exists for this combo
   findBitly(eventid) {
-    console.log("looking for bitlyLink")
-    var data = {
-      event: eventid
-    }
     $.ajax({
-      url: '/promoter',
+      url: '/promoter/' + eventid,
       contentType: 'application/json',
       type: 'GET',
-      data: JSON.stringify(data),
       success: (result) => {
-        console.log(result)
         // if link exist
         if (result.link) {
           // set state
-          this.setState({shortenedUrl: xxxx})
+          this.setState({shortenedUrl: result.link})
         } else {
-          // make bitly link (unique for this eventbrite URL + this user)
-          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later
+          // make bitly link (unique for this eventbrite URL + this userid)
+          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later result.userid
         }
       },
       error: (err) => {
