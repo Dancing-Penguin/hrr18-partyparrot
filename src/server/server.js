@@ -157,7 +157,6 @@ app.get('/promoter/:event', stormpath.loginRequired, function(req, res){
             console.log("Error: ", err);
             res.status(500).send({error: err});
           } else {  // return userid and bitly link
-            // res.json({'userid': 123456789, 'link': null}); //this is temporary fake
             res.json({'userid': user['_id'], 'link': null});
           }
         });

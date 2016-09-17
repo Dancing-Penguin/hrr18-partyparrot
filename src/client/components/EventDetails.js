@@ -36,7 +36,7 @@ export default class EventDetails extends React.Component {
                 <hr />
                 <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Promote with <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /></button>
                 <hr />
-                <input className="inputId" value={this.state.shortenedUrl} />
+                <input className="inputId" value={this.state.shortenedUrl} readOnly/>
               </div>
               <div className="card card-block">
                 <h4 className="card-title">Decription</h4>
