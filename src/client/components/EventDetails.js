@@ -10,25 +10,12 @@ export default class EventDetails extends React.Component {
       linkclickscount: 0,
       username: 'username',
       eventid: this.props.event.eventbrite.id,
-      promoters: []
+      promoters: [],
+      formatPromoters: [],
+      zero: 0
     }
   }
 
-  componentDidMount() {
-
-    console.log("props:", this.props)
-
-    console.log("eventid", this.state.eventid)
-
-    this.getUsername();
-    this.getPromoters(this.state.eventid)
-
-    $('.card-text').append(this.props.event.eventbrite.description.html)
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    this.bitlyLinkClicks(nextState.shortenedUrl);
-  }
 
   render () {
     $('.modal-backdrop').remove() // Quickfix to remove the modal
@@ -47,10 +34,9 @@ export default class EventDetails extends React.Component {
               <div className="card card-block">
                 <h4 className="card-title">Start Promoting Now!</h4>
                 <hr />
-                // here we should check if the is link for user in db, if so display that, if not get one
-                <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Get your <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /> link</button>
+                <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Promote with <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /></button>
                 <hr />
-                <input className="inputId" value={this.state.shortenedUrl} />
+                <input className="inputId" value={this.state.shortenedUrl} readOnly/>
               </div>
               <div className="card card-block">
                 <h4 className="card-title">Decription</h4>
@@ -109,10 +95,10 @@ export default class EventDetails extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Max Doe</td>
-                        <td>{this.state.linkclickscount}</td>
-                      </tr>
+                      {this.state.formatPromoters.map((promoter) => 
+                        <tr key={++this.state.zero}>
+                          <td>{promoter.fullName}</td><td>{promoter.clickCount}</td>
+                        </tr>)}
                     </tbody>
                   </table>
                 </div>
@@ -136,7 +122,7 @@ export default class EventDetails extends React.Component {
     )
   }
 
-  // get promoters
+  // get promoters & pass over to formatBitlyClicks
   getPromoters(eventid) {
     $.ajax({
       url: '/promoters/' + eventid,
@@ -145,12 +131,47 @@ export default class EventDetails extends React.Component {
 
       success: (result) => {
         this.setState({promoters: result})
-        console.log(this.state)
+        console.log("promoters:", this.state.promoters)
+        this.formatBitlyClicks(result)
       },
       error: (err) => {
         console.log("err0r:", err)
       }
     })
+  }
+
+  // prep to add bitly clicks to promoters data array of objects
+  formatBitlyClicks(promoters) {
+    promoters.map((promoter) => {
+      // console.log("formatBitly:", promoter)
+      this.addBitlyClicks(promoter)
+    })
+  }
+
+  addBitlyClicks(promoter) {
+    // console.log("promoter input:", promoter)
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
+
+    // console.log("url:", "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + promoter.link)
+    console.log("rightbefore ajax call", this.state.zero, "formatpromo", this.state.formatPromoters)
+
+    $.ajax({
+      url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + promoter.link,
+      type: 'GET',
+
+      success: (data) => {
+        // console.log("data:", data)
+        promoter.clickCount = data.data.link_clicks
+        // console.log("after update:", promoter)
+        console.log("formatpromoters:", this.state.formatPromoters)
+        var newFormatPromoters = this.state.formatPromoters.push(promoter)
+        this.setState({formatPromoters, newFormatPromoters})
+        console.log("formatPromoters:", this.state.formatPromoters)
+      },
+      error: (data) => {
+        console.error('Failed to get link clicks. Error: ', data);
+      }
+    });
   }
 
 
@@ -201,8 +222,9 @@ export default class EventDetails extends React.Component {
           // set state
           this.setState({shortenedUrl: result.link})
         } else {
+          this.setState({userid: result.userid})
           // make bitly link (unique for this eventbrite URL + this userid)
-          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later result.userid
+          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + result.userid)
         }
       },
       error: (err) => {
@@ -250,6 +272,26 @@ export default class EventDetails extends React.Component {
         console.log("err0r:", err)
       }
     })
+  }
+
+  componentWillMount() {
+
+    console.log("state", this.state)
+    this.getUsername();
+    this.getPromoters(this.state.eventid)
+    console.log("promoters:", this.state.promoters)
+    console.log("formatpromoters:", this.state.formatPromoters)
+
+  }
+
+  componentDidMount() {
+
+    $('.card-text').append(this.props.event.eventbrite.description.html)
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    // this.formatBitlyClicks(nextState.promoters)
+    this.bitlyLinkClicks(nextState.shortenedUrl);
   }
 
   // // This doesn't seem needed
