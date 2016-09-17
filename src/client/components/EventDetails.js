@@ -9,7 +9,8 @@ export default class EventDetails extends React.Component {
       shortenedUrl: 'Promotion URL',
       linkclickscount: 0,
       username: 'username',
-      eventid: this.props.event.eventbrite.id
+      eventid: this.props.event.eventbrite.id,
+      promoters: []
     }
   }
 
@@ -134,6 +135,90 @@ export default class EventDetails extends React.Component {
     )
   }
 
+  // get promoters
+  getPromoters(eventid) {
+    var data = {event: eventid}
+    $.ajax({
+      url: '/promoters',
+      type: 'GET',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+
+      success: (result) => {
+        this.setState({promoters: data})
+      },
+      error: (err) => {
+        console.log("err0r:", err)
+      }
+    })
+  }
+
+
+  // will need to loop through this with actual URL
+  bitlyLinkClicks(linkclicksurl) {
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
+
+    $.ajax({
+      url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + linkclicksurl,
+      type: 'GET',
+
+      success: (data) => {
+        this.setState({linkclickscount: data.data.link_clicks});
+      },
+      error: (data) => {
+        console.error('Failed to get link clicks. Error: ', data);
+      }
+    });
+  }
+
+  // get username
+  getUsername() {
+    $.ajax({
+      url: '/secrets',
+      type: 'GET',
+      success: (username) => {
+        // save username on state
+        this.setState({username: username});
+        // find bitly
+        this.findBitly({event:this.state.eventid})
+
+      },
+      error: function(err) {
+        console.log("Error: ", err)
+      }
+    })
+  }
+
+  // check user db if bitly already exists for this combo
+  findBitly(eventid) {
+    console.log("looking for bitlyLink")
+    var data = {
+      event: eventid
+    }
+    $.ajax({
+      url: '/promoter',
+      contentType: 'application/json',
+      type: 'GET',
+      data: JSON.stringify(data),
+      success: (result) => {
+        console.log(result)
+        // if link exist
+        if (result.link) {
+          // set state
+          this.setState({shortenedUrl: xxxx})
+        } else {
+          // make bitly link (unique for this eventbrite URL + this user)
+          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later
+        }
+      },
+      error: (err) => {
+        console.log("err0r:", err)
+      }
+
+    })
+  }
+
+  // call to bitly to get bitly link
   bitlyShortenLink(currenturl) {
     // console.log("currenturl:", currenturl)
     var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36"; //change access tokens
@@ -153,50 +238,12 @@ export default class EventDetails extends React.Component {
     });
   }
 
-  // will need to loop through this with actual URL
-  bitlyLinkClicks(linkclicksurl) {
-    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
-
-    $.ajax({
-      url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + linkclicksurl,
-      type: 'GET',
-
-      success: (data) => {
-        this.setState({linkclickscount: data.data.link_clicks});
-      },
-      error: (data) => {
-        console.error('Failed to get link clicks. Error: ', data);
-      }
-    });
-  }
-
-  // check user db if bitly already exists for this combo
-
-  // get username
-  getUsername() {
-    $.ajax({
-      url: '/secrets',
-      type: 'GET',
-      success: (username) => {
-        // save username on state
-        this.setState({ username: username });
-        // create bitly url unique to this eventbriteURL + this user
-        this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username)
-      },
-      error: function(err) {
-        console.log("Error: ", err)
-      }
-    })
-  }
-
-  // save bitlyLink to db
+  // save bitlyLink to db (called when request to make bitly is passed)
   saveBitly(bitlyLink) {
-    console.log("preparing to save bitly link to db")
     var data = {
       event: this.state.eventid,
       link: bitlyLink
     }
-    console.log(data)
     $.ajax({
       url: '/promoter',
       contentType: 'application/json',
