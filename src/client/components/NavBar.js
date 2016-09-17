@@ -12,7 +12,7 @@ export default class NavBar extends React.Component {
           </button>
           <div className="wide">
             <div className="collapse navbar-toggleable-xs" id="collapseEx">
-              <a className="navbar-brand" href="#" target="_blank">
+              <a className="navbar-brand" href="/">
                 <img src="img/Logo.svg" style={{"width":"50px"}} />
               </a>
               <ul className="nav navbar-nav pull-right" style={{"marginTop":"3px"}}>
