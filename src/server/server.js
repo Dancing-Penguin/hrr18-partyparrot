@@ -127,7 +127,8 @@ app.get('/promoters/:event', stormpath.loginRequired, function(req, res){
 // Expects {event: "eventname", link: "bitlyLink"}
 app.post('/promoter', stormpath.loginRequired, function(req, res){
   var newPromoterObj = req.body;
-  newPromoterObj.promoter = req.user.username
+  newPromoterObj.promoter = req.user.username;
+  newPromoterObj.fullName = req.user.fullName;
 
   Promo.create(newPromoterObj, function(err, promo){
     if (err) {
@@ -136,7 +137,7 @@ app.post('/promoter', stormpath.loginRequired, function(req, res){
     } else {
       res.status(200);
     }
-  })
+  });
 });
 
 
