@@ -86,17 +86,9 @@ body {
 }
 
 .inputEventInfo {
-  width:30%;
+  width:20%;
 }
 
-.inputEventInfoDate {
-  outline:none;
-  padding:10px;
-  border:4px #ddd solid;
-  color:#999;
-  font-size:20px;
-  vertical-align:top
-}
 
 .inputId {
   width: 80%;
@@ -104,7 +96,7 @@ body {
 
 .scrollBox {
   overflow:auto;
-  height:1000px;
+  height:500px;
 }
 
 footer.page-footer {
