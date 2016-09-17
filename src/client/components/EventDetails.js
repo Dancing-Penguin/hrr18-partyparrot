@@ -8,11 +8,16 @@ export default class EventDetails extends React.Component {
     this.state = {
       shortenedUrl: 'Promotion URL',
       linkclickscount: 0,
-      username: 'username'
+      username: 'username',
+      eventid: this.props.event.eventbrite.id
     }
   }
 
   componentDidMount() {
+
+    console.log("props:", this.props)
+
+    console.log("eventid", this.state.eventid)
 
     this.getUsername();
 
@@ -137,7 +142,9 @@ export default class EventDetails extends React.Component {
       url: "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + currenturl + "&format=txt",
       type: 'GET',
       success: (data) => {
-        this.setState({shortenedUrl: data}); 
+        var link = data.trim()
+        this.setState({shortenedUrl: link});
+        this.saveBitly(link)
         // console.log('data bitlyShortenLink ', data);
       },
       error: (data) => {
@@ -165,7 +172,6 @@ export default class EventDetails extends React.Component {
 
   // check user db if bitly already exists for this combo
 
-
   // get username
   getUsername() {
     $.ajax({
@@ -179,6 +185,28 @@ export default class EventDetails extends React.Component {
       },
       error: function(err) {
         console.log("Error: ", err)
+      }
+    })
+  }
+
+  // save bitlyLink to db
+  saveBitly(bitlyLink) {
+    console.log("preparing to save bitly link to db")
+    var data = {
+      eventname: this.state.eventid,
+      link: bitlyLink
+    }
+    console.log(data)
+    $.ajax({
+      url: '/promoter',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify(data),
+      success: (result) => {
+        console.log("success:", result)
+      },
+      error: (err) => {
+        console.log("err0r:", err)
       }
     })
   }

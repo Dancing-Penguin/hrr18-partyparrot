@@ -13,6 +13,7 @@ export default class Event extends React.Component {
   }
 
   componentWillMount() {
+
     this.bitlyShortenLink(this.props.selectedEvent.url);
     this.bitlyGetUsername();
   }
