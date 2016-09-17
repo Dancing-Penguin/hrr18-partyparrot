@@ -8,13 +8,20 @@ export default class EventDetails extends React.Component {
     this.state = {
       shortenedUrl: 'Promotion URL',
       linkclickscount: 0,
-      username: 'username'
+      username: 'username',
+      eventid: this.props.event.eventbrite.id,
+      promoters: []
     }
   }
 
   componentDidMount() {
 
+    console.log("props:", this.props)
+
+    console.log("eventid", this.state.eventid)
+
     this.getUsername();
+    this.getPromoters(this.state.eventid)
 
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
@@ -129,22 +136,23 @@ export default class EventDetails extends React.Component {
     )
   }
 
-  bitlyShortenLink(currenturl) {
-    // console.log("currenturl:", currenturl)
-    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36"; //change access tokens
-
+  // get promoters
+  getPromoters(eventid) {
     $.ajax({
-      url: "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + currenturl + "&format=txt",
+      url: '/promoters/' + eventid,
       type: 'GET',
-      success: (data) => {
-        this.setState({shortenedUrl: data}); 
-        // console.log('data bitlyShortenLink ', data);
+      contentType: 'application/json',
+
+      success: (result) => {
+        this.setState({promoters: result})
+        console.log(this.state)
       },
-      error: (data) => {
-        console.error('Failed to get shortened URL. Error: ', data);
+      error: (err) => {
+        console.log("err0r:", err)
       }
-    });
+    })
   }
+
 
   // will need to loop through this with actual URL
   bitlyLinkClicks(linkclicksurl) {
@@ -163,9 +171,6 @@ export default class EventDetails extends React.Component {
     });
   }
 
-  // check user db if bitly already exists for this combo
-
-
   // get username
   getUsername() {
     $.ajax({
@@ -173,12 +178,76 @@ export default class EventDetails extends React.Component {
       type: 'GET',
       success: (username) => {
         // save username on state
-        this.setState({ username: username });
-        // create bitly url unique to this eventbriteURL + this user
-        this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username)
+        this.setState({username: username});
+        // find bitly
+        this.findBitly(this.state.eventid)
+
       },
       error: function(err) {
         console.log("Error: ", err)
+      }
+    })
+  }
+
+  // check user db if bitly already exists for this combo
+  findBitly(eventid) {
+    $.ajax({
+      url: '/promoter/' + eventid,
+      contentType: 'application/json',
+      type: 'GET',
+      success: (result) => {
+        // if link exist
+        if (result.link) {
+          // set state
+          this.setState({shortenedUrl: result.link})
+        } else {
+          // make bitly link (unique for this eventbrite URL + this userid)
+          this.bitlyShortenLink(this.props.event.eventbrite.url + "?camid=" + this.state.username) // replace with userid later result.userid
+        }
+      },
+      error: (err) => {
+        console.log("err0r:", err)
+      }
+
+    })
+  }
+
+  // call to bitly to get bitly link
+  bitlyShortenLink(currenturl) {
+    // console.log("currenturl:", currenturl)
+    var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36"; //change access tokens
+
+    $.ajax({
+      url: "https://api-ssl.bitly.com/v3/shorten?access_token=" + ACCESS_TOKEN + "&longUrl=" + currenturl + "&format=txt",
+      type: 'GET',
+      success: (data) => {
+        var link = data.trim()
+        this.setState({shortenedUrl: link});
+        this.saveBitly(link)
+        // console.log('data bitlyShortenLink ', data);
+      },
+      error: (data) => {
+        console.error('Failed to get shortened URL. Error: ', data);
+      }
+    });
+  }
+
+  // save bitlyLink to db (called when request to make bitly is passed)
+  saveBitly(bitlyLink) {
+    var data = {
+      event: this.state.eventid,
+      link: bitlyLink
+    }
+    $.ajax({
+      url: '/promoter',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify(data),
+      success: (result) => {
+        console.log("success:", result)
+      },
+      error: (err) => {
+        console.log("err0r:", err)
       }
     })
   }
