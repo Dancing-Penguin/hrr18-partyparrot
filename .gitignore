@@ -10,3 +10,6 @@ node_modules/
 # Webpack bundle.js
 src/public/bundle.js
 src/public/bundle.js.map
+
+# Other
+.DS_Store

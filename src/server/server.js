@@ -36,24 +36,40 @@ app.use(express.static(__dirname + '/../public'));
 app.get('/parrot', function(req,res){
   res.sendFile(path.join(__dirname, '/../public/parrot.html'));
 })
+
 //In the interest of time and speed we created one schema to avoid joins
 app.post('/create',stormpath.loginRequired, function(req,res){
-  var event = new Event({
-  name: req.body.event.name.text,
-  desc: req.body.event.description.text,
-  promoters: [req.user.fullName],
-  owner: req.user.username,
-  gPoint: req.body.gPoint,
-  gReward: req.body.gReward,
-  sPoint: req.body.sPoint,
-  sReward: req.body.sReward,
-  bPoint: req.body.bPoint,
-  bReward: req.body.bReward,
-  eventbrite: req.body.event
-  });
-  event.save(function (err, post) {
-    if (err) {console.error(err)}
-    res.status(201).json('Hey I posted ' + post);
+  Event.find({}, 'eventbrite', function(err, events){
+    if (err) {
+      console.log("ERR: ", err);
+    } else {
+      var ids = events.map(function(event){
+        return event.eventbrite.id;
+      }).filter(function(id){
+        return id === req.body.event.id;
+      });
+      if (ids.length) { // sends error if event already taken
+        res.status(500).json({error: "Event Taken"});
+      } else { // creates event if not a duplicate
+        var event = new Event({
+        name: req.body.event.name.text,
+        desc: req.body.event.description.text,
+        promoters: [req.user.fullName],
+        owner: req.user.username,
+        gPoint: req.body.gPoint,
+        gReward: req.body.gReward,
+        sPoint: req.body.sPoint,
+        sReward: req.body.sReward,
+        bPoint: req.body.bPoint,
+        bReward: req.body.bReward,
+        eventbrite: req.body.event
+        });
+        event.save(function (err, post) {
+          if (err) console.error(err);
+          res.status(201).json('Hey I posted ' + post);
+        });
+      }
+    }
   });
 });
 
