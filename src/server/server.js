@@ -57,18 +57,46 @@ app.post('/create',stormpath.loginRequired, function(req,res){
 });
 
 // Returns all events independent of what user is logged in
-app.get('/events', function (req, res, next) {
+app.get('/events',stormpath.loginRequired, function (req, res, next) {
   Event.find(function(err, events) {
     if (err) { console.error(err) }
     res.json(events);
   })
-})
+  // Create user object with all of user's info
+  var user = new User({
+    username: req.user.username,
+    firstName: req.user.givenName,
+    lastName: req.user.surname,
+    fullName: req.user.fullName,
+    memberSince: req.user.createdAt
+  });
+  // Check User Model for User. If !User, then save.
+  User.findOne({username: req.user.username}, function(err,doc){
+    if (err) {
+      console.error(error)
+    }
+    // If no document found, update user database with user info
+    if (doc === null){
+      user.save(function(err,post){
+        if (err) {console.error(err)}
+      });
+    }
+  });
+});
 
 // Returns events that only the user who is logged in has created
 app.get('/userEvents', stormpath.loginRequired, function(req,res) {
   Event.find({'owner': req.user.username}, function(err, event) {
     if (err) console.error(err);
     res.json(event);
+  })
+})
+
+// Returns user profile data for only the user who is logged in
+app.get('/userProfile', stormpath.loginRequired, function(req,res) {
+  User.find({'username': req.user.username}, function(err, user) {
+    if (err) console.error(err);
+    res.json(user);
   })
 })
 
