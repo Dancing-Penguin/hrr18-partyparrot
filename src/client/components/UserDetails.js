@@ -9,11 +9,19 @@ export default class UserDetails extends React.Component {
     super();
     this.state  = {
       userEvents: [],
-      userProfile: {}
+      userProfile: [{
+                      fullName: 'Unknown',
+                      memberSince: 'Unknown',
+                      username: 'Unknown'
+                    }]
       }
     }
   render () {
 
+    console.log('testing this.state: ', this.state.userProfile[0])
+    if (this.state.userProfile[0]){
+      console.log('testing this.state: ', this.state.userProfile[0].fullName)
+    }
     return (
         <div className="wide">
     <div className="row margin-top">
@@ -27,14 +35,17 @@ export default class UserDetails extends React.Component {
             </div>
             <div className="col-xs-12">
               <p className="text-xs-center margin-top">
-                <strong>Name:  </strong>
-                {console.log('testing this.state: ', this.state.userProfile)}
-
+                <strong>{this.state.userProfile[0].fullName}</strong>
+                <hr />
               </p>
+              <div className="col-xs-12 text-xs-left ">
+                <p><strong>Username:</strong> {this.state.userProfile[0].username}</p>
+                <p><strong>Member Since:</strong> {this.state.userProfile[0].memberSince.slice(0,4)}</p>
+
+              </div>
 
 
 
-              <p>Member Since: </p>
 
 
 
