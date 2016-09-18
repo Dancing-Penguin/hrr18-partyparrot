@@ -1,4 +1,7 @@
 import React from 'react';
+// Collapsible courtesy of react-collapsible
+// github.com/glennflanagan/react-collapsible
+import Collapsible from './Collapsible';
 
 export default class Event extends React.Component {
 
@@ -11,13 +14,19 @@ export default class Event extends React.Component {
       <div>
         <hr />
         <div className="row">
+
           <div className="col-md-12">
             <img src={this.props.event.eventbrite.logo ? this.props.event.eventbrite.logo.url : "http://130.211.52.161/tradeo-content/themes/nucleare-pro/images/no-image-box.png"}  alt="" />
           </div>
 
-          <div className="col-md-12" style={{"margin-top":"20px"}}>
-            <p className="card-txt" dangerouslySetInnerHTML={{__html: this.props.event.eventbrite.description.html}}></p>
+          <div style={{"margin-top":"20px"}} className="col-md-12">
+            <Collapsible trigger="View Event Description">
+              <div style={{"margin-top":"20px"}}>
+                <p className="card-txt" dangerouslySetInnerHTML={{__html: this.props.event.eventbrite.description.html}}></p>
+              </div>
+            </Collapsible>
           </div>
+
         </div>
         <hr />
       </div>
