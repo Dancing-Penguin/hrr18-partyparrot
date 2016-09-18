@@ -36,7 +36,10 @@ export default class EventDetails extends React.Component {
                 <hr />
                 <button className="btn btn-lg waves-effect waves-light" style={{"backgroundColor":"#ff5a00"}}>Promote with <img src="img/BitlyLogo.png" className="img-responsive img-fluid" style={{"width":"60px", "display":"inline"}} /></button>
                 <hr />
-                <input className="inputId" value={this.state.shortenedUrl} readOnly/>
+                <input className="inputId bitlybox" id="bitlyurl" value={this.state.shortenedUrl} readOnly/>
+                <button className="copyBtn bitlybox" data-clipboard-target="#bitlyurl">
+                    <img id="copyimg" src="http://leanconf.co.uk/assets/clippy-686d81e030899b477865d67a01fe34e83d8e68aa8da91a59205ad3e901a3ec71.svg" />
+                </button>
               </div>
               <div className="card card-block">
                 <h4 className="card-title">Decription</h4>
@@ -274,6 +277,11 @@ export default class EventDetails extends React.Component {
     })
   }
 
+  copyToClipboard(e) {
+    console.log(e)
+    console.log(this.target.value)
+  }
+
   componentWillMount() {
 
     console.log("state", this.state)
@@ -285,6 +293,14 @@ export default class EventDetails extends React.Component {
   }
 
   componentDidMount() {
+
+    new Clipboard('.copyBtn')
+
+    // var clipboard = new Clipboard(this.refs.button, {
+    //   text: (trigger) => {
+    //     return this.refs.snippet.innerText;
+    //   }
+    // })
 
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
