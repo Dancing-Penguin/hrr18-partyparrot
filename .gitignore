@@ -8,7 +8,7 @@ node_modules/
 .flooignore
 
 # Webpack bundle.js
-src/public/bundle.js
+src/public/bundle.js.map
 src/public/bundle.js.map
 
 # Other
