@@ -16,6 +16,7 @@ export default class Event extends React.Component {
         <div className="row">
 
           <div className="col-md-12">
+            <h4>{this.props.event.eventbrite.name.text}</h4>
             <img src={this.props.event.eventbrite.logo ? this.props.event.eventbrite.logo.url : "http://130.211.52.161/tradeo-content/themes/nucleare-pro/images/no-image-box.png"}  alt="" />
           </div>
 

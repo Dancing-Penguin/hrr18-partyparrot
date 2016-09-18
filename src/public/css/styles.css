@@ -191,4 +191,5 @@ footer.page-footer {
   margin-top: 5px;
   border-radius: 3px;
   color: white;
+  cursor: pointer;
 }
