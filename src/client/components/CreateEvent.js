@@ -71,8 +71,8 @@ export default class CreateEvent extends React.Component {
             <form style={{ 'width':'100%' }}>
               <input className="inputEventInfo" placeholder="Event Keyword..." ref ={ (input) => this.searchByName = input } />
               <input className="inputEventInfo" placeholder="Event City..." style={{ 'borderLeft':'none' }} ref ={ (input) => this.searchByCity = input } />
-              <input className="inputEventInfo" placeholder="Event Start Date" ref ={ (input) => this.searchByStartDate = input } />
-              <input className="inputEventInfo" placeholder="Event End Date" ref ={ (input) => this.searchByEndDate = input } />
+              <input className="inputEventInfo inputEventDate" placeholder="Event Start Date: YYYY-MM-DD" ref ={ (input) => this.searchByStartDate = input } />
+              <input className="inputEventInfo inputEventDate" placeholder="Event End Date: YYYY-MM-DD" ref ={ (input) => this.searchByEndDate = input } />
               <button className="searchBtn" type='button' onClick = { () => this.search(this.searchByName.value, this.searchByCity.value, this.searchByStartDate.value, this.searchByEndDate.value) }><i className="material-icons" style={{"marginTop":"3px", "color":"#666"}}>search</i></button>
             </form>
             <div className="col-xs-12">
