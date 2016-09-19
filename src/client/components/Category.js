@@ -13,7 +13,7 @@ export default class Category extends React.Component {
       <div className='category'>
         <div className="col-md-6 col-lg-4">
           <div className="view hm-black-strong" style={{"marginTop":"30px"}} data-toggle="modal" data-target={"#events-" + this.props.category.id}>
-            <img src={this.props.category.imgUrl} className="img-fluid" alt="" />
+            <img src={this.props.category.imgUrl} className="img-fluid" id="categgory-image-override" alt=""/>
             <div className="mask flex-center waves-effect">
               <h4 className="white-text">{this.props.category.title}</h4>
             </div>

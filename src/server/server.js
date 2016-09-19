@@ -224,6 +224,42 @@ app.get('/scores', stormpath.loginRequired, function(req, res){
   });
 });
 
+// Will return user's bitly and event for each promoted event
+// returns [{link: bitlyLink, gS: #, sS: #, bS: #, event: eventbrite}]
+// returns empty array [] if no promoted events
+app.get('/scores', stormpath.loginRequired, function(req, res){
+  Promo.find({'promoter': req.user.username}, 'event link', function(err, promos){
+    if (err) {
+      console.log("Error: ", err);
+      res.status(500).send({error: err});
+    } else {
+      Event.find({}, 'eventbrite gpoint gPoint sPoint bPoint', function(err, events){
+        if (err) {
+          console.log("Error: ", err);
+          res.status(500).send({error: err});
+        } else {
+          var results = events.reduce(function(results, event){
+            for (var i=0; i<promos.length; i++){
+              if (promos[i].event === event.eventbrite.id) {
+                // var modEvent = event;
+                // modEvent.link = promos[i].link;
+                return results.concat({
+                  link: promos[i].link,
+                  eventbrite: event.eventbrite,
+                  gPoint: event.gPoint,
+                  sPoint: event.sPoint,
+                  bPoint: event.bPoint
+                });
+              }
+            }
+            return results;
+          }, []);
+          res.json(results);
+        }
+      });
+    }
+  });
+});
 
 // If no app.get path was found for request, this is the default, which will
 // then use the react router

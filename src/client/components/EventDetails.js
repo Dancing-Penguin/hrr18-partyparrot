@@ -134,7 +134,6 @@ export default class EventDetails extends React.Component {
 
       success: (result) => {
         this.setState({promoters: result})
-        console.log("promoters:", this.state.promoters)
         this.formatBitlyClicks(result)
       },
       error: (err) => {
@@ -146,30 +145,22 @@ export default class EventDetails extends React.Component {
   // prep to add bitly clicks to promoters data array of objects
   formatBitlyClicks(promoters) {
     promoters.map((promoter) => {
-      // console.log("formatBitly:", promoter)
       this.addBitlyClicks(promoter)
     })
   }
 
   addBitlyClicks(promoter) {
-    // console.log("promoter input:", promoter)
     var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
-
-    // console.log("url:", "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + promoter.link)
-    console.log("rightbefore ajax call", this.state.zero, "formatpromo", this.state.formatPromoters)
 
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + promoter.link,
       type: 'GET',
 
       success: (data) => {
-        // console.log("data:", data)
         promoter.clickCount = data.data.link_clicks
-        // console.log("after update:", promoter)
-        console.log("formatpromoters:", this.state.formatPromoters)
-        var newFormatPromoters = this.state.formatPromoters.push(promoter)
-        this.setState({formatPromoters, newFormatPromoters})
-        console.log("formatPromoters:", this.state.formatPromoters)
+        this.state.formatPromoters.push(promoter)
+        // because of asynch nature using forceUpdate to get a page update
+        this.forceUpdate()
       },
       error: (data) => {
         console.error('Failed to get link clicks. Error: ', data);
@@ -239,7 +230,7 @@ export default class EventDetails extends React.Component {
 
   // call to bitly to get bitly link
   bitlyShortenLink(currenturl) {
-    // console.log("currenturl:", currenturl)
+
     var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36"; //change access tokens
 
     $.ajax({
@@ -249,7 +240,6 @@ export default class EventDetails extends React.Component {
         var link = data.trim()
         this.setState({shortenedUrl: link});
         this.saveBitly(link)
-        // console.log('data bitlyShortenLink ', data);
       },
       error: (data) => {
         console.error('Failed to get shortened URL. Error: ', data);
@@ -277,18 +267,10 @@ export default class EventDetails extends React.Component {
     })
   }
 
-  copyToClipboard(e) {
-    console.log(e)
-    console.log(this.target.value)
-  }
-
   componentWillMount() {
 
-    console.log("state", this.state)
     this.getUsername();
     this.getPromoters(this.state.eventid)
-    console.log("promoters:", this.state.promoters)
-    console.log("formatpromoters:", this.state.formatPromoters)
 
   }
 
@@ -296,21 +278,15 @@ export default class EventDetails extends React.Component {
 
     new Clipboard('.copyBtn')
 
-    // var clipboard = new Clipboard(this.refs.button, {
-    //   text: (trigger) => {
-    //     return this.refs.snippet.innerText;
-    //   }
-    // })
-
     $('.card-text').append(this.props.event.eventbrite.description.html)
   }
 
   componentWillUpdate(nextProps, nextState) {
-    // this.formatBitlyClicks(nextState.promoters)
-    this.bitlyLinkClicks(nextState.shortenedUrl);
+    // below doesn't actually work, but gives me a re-render without looping infinitely
+    // this.bitlyLinkClicks(nextState.shortenedUrl);
   }
 
-  // // This doesn't seem needed
+  // // This doesn't seem needed ?
   // bitlyGetUsername() {
   //   var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
