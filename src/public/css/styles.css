@@ -137,6 +137,9 @@ footer.page-footer {
   color: #fff;
 }
 
+.hidden {
+  display:none;
+}
 /*************************React Related Classes*******************************/
 .app {
   display: inline;
