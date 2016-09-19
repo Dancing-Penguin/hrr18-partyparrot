@@ -224,7 +224,6 @@ app.get('/scores', stormpath.loginRequired, function(req, res){
   });
 });
 
-
 // Will return user's bitly and event for each promoted event
 // returns [{link: bitlyLink, gS: #, sS: #, bS: #, event: eventbrite}]
 // returns empty array [] if no promoted events
@@ -261,7 +260,6 @@ app.get('/scores', stormpath.loginRequired, function(req, res){
     }
   });
 });
-
 
 // If no app.get path was found for request, this is the default, which will
 // then use the react router
