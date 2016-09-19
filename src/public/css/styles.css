@@ -194,6 +194,10 @@ footer.page-footer {
   cursor: pointer;
 }
 
+#categgory-image-override {
+  height: 250px;
+  width: 100%;
+}
 .noPad {
   padding-left: 0px;
   padding-right: 0px;
