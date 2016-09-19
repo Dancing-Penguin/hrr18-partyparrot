@@ -10,12 +10,11 @@ export default class CreateEvent extends React.Component {
       events: [],
       event: [],
       selectedEvent: {},
-      submitted: ""
+      submitted: "",
+      taken: false
     }
   }
 
-
-//add start date, end date
   render () {
     var preStyle = {
       marginBottom: 5
@@ -33,26 +32,7 @@ export default class CreateEvent extends React.Component {
         </li>
       )
     });
-            //<p>Address: {eventEntry.venue.address.localized_address_display}</p>
-            //<p>Start Date: {eventEntry.start.local} {eventEntry.start.timezone}</p>
-            //<p>End Date: {eventEntry.end.local} {eventEntry.end.timezone}</p>
 
-
-
-    // var dateStyle = {
-    //   height: 30,
-    //   width: '26.83%',
-    //   outline:'none',
-    //   padding:10,
-    //   border:'4px #ddd solid',
-    //   color:'#999',
-    //   fontSize:20,
-    //   verticalAlign:'top'
-    // };
-
-
-    //<NavBar />
-    //<h1 className="white-text h1-responsive">Create Your Event</h1>
     if(!this.state.submitted){
     return (
       <div className='create-event'>
@@ -115,6 +95,9 @@ export default class CreateEvent extends React.Component {
                 event: this.state.selectedEvent
               })}>Submit</button>
             </div>
+            <div className={this.state.taken ? '' : 'hidden'}>
+              <h3>Event Taken! Pick Another One, Cool?</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -143,7 +126,8 @@ export default class CreateEvent extends React.Component {
     this.sReward.value = "";
     this.bPoint.value = "";
     this.bReward.value = "";
-    this.state.selectedEvent = {};
+    this.setState({selectedEvent: {}});
+    //this.state.selectedEvent = {};
   }
 
   handleSubmit(eventObj) {
@@ -153,20 +137,23 @@ export default class CreateEvent extends React.Component {
       type: 'POST',
       data: JSON.stringify(eventObj),
       success: (data) => {
+        console.log('create event success', data);
         this.setState({data: data});
         this.setState({submitted: "submitted"});
       },
       error: (xhr, status, err) => {
         this.clearForm();
+        this.setState({taken: true});
       }
     });
   }
 
   search(query, city, startDate, endDate){
+    this.setState({taken: false});
     var url = '';
     var s = startDate + 'T00:00:00Z';
     var e = endDate + 'T00:00:00Z';
-    console.log('eventbrite date', s, e);
+    //console.log('eventbrite date', s, e);
     if(!startDate && !endDate) {
       url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
     } else if(!startDate) {
@@ -177,7 +164,7 @@ export default class CreateEvent extends React.Component {
       url = `https://www.eventbriteapi.com/v3/events/search/?q=${query}&sort_by=best&location.address=${city}&start_date.range_start=${s}&start_date.range_end=${e}&expand=venue&token=YZO3HZ5MJZYKY6QU64H2`;
     }
     Request.get(url).then((response) => {
-      console.log('Everbrite', response.body.events);
+      //console.log('Everbrite', response.body.events);
       this.setState({
         events: response.body.events
       });
