@@ -9,7 +9,7 @@ export default class CategoryList extends React.Component {
   }
 
   render () {
-  // console.log(this.props.categoryList)
+  // console.log(this.props.categoryList) 
     return (
       <div className='category-list'>
         <div className="wide">
