@@ -193,3 +193,8 @@ footer.page-footer {
   color: white;
   cursor: pointer;
 }
+
+.noPad {
+  padding-left: 0px;
+  padding-right: 0px;
+}
