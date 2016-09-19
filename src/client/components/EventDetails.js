@@ -134,7 +134,6 @@ export default class EventDetails extends React.Component {
 
       success: (result) => {
         this.setState({promoters: result})
-        console.log("promoters:", this.state.promoters)
         this.formatBitlyClicks(result)
       },
       error: (err) => {
@@ -153,18 +152,15 @@ export default class EventDetails extends React.Component {
   addBitlyClicks(promoter) {
     var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
-    console.log("rightbefore ajax call", this.state.zero, "formatpromo", this.state.formatPromoters)
-
     $.ajax({
       url: "https://api-ssl.bitly.com/v3/link/clicks?access_token=" + ACCESS_TOKEN + "&link=" + promoter.link,
       type: 'GET',
 
       success: (data) => {
         promoter.clickCount = data.data.link_clicks
-        console.log("formatpromoters:", this.state.formatPromoters)
-        var newFormatPromoters = this.state.formatPromoters.push(promoter)
-        this.setState({formatPromoters, newFormatPromoters})
-        console.log("formatPromoters:", this.state.formatPromoters)
+        this.state.formatPromoters.push(promoter)
+        // because of asynch nature using forceUpdate to get a page update
+        this.forceUpdate()
       },
       error: (data) => {
         console.error('Failed to get link clicks. Error: ', data);
@@ -287,10 +283,10 @@ export default class EventDetails extends React.Component {
 
   componentWillUpdate(nextProps, nextState) {
     // below doesn't actually work, but gives me a re-render without looping infinitely
-    this.bitlyLinkClicks(nextState.shortenedUrl);
+    // this.bitlyLinkClicks(nextState.shortenedUrl);
   }
 
-  // // This doesn't seem needed
+  // // This doesn't seem needed ?
   // bitlyGetUsername() {
   //   var ACCESS_TOKEN = "21d527d16de4bfef19119f2b3746d795c4fe2a36";
 
