@@ -17,7 +17,8 @@ export default class App extends React.Component {
         119: "http://www.skillbus.co/wp-content/uploads/2015/06/PhotographyMasterclassImage.jpg",//hobbies & special interest
         101: "http://www.aurameir.com/wp-content/uploads/2016/08/Business_Incubation_Startup.jpg",//business
         111: "http://innevation.switchltd.netdna-cdn.com/wp-content/uploads/2016/02/Charity.jpg",//charity
-        118: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Subaru_Impreza_22B_STi-Version.jpg"//auto
+        118: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Subaru_Impreza_22B_STi-Version.jpg",//auto
+        115: "https://image-store.slidesharecdn.com/97183076-de60-4112-aff4-5219a7f9d888-large.jpeg"
       }
     }
   }
