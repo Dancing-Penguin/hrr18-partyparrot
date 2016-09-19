@@ -1,5 +1,6 @@
 import React from 'react';
 import EventList from './EventList';
+import PromoEntry from './PromoEntry';
 //import User from '../../server/models/user.js';
 
 
@@ -13,9 +14,11 @@ export default class UserDetails extends React.Component {
                       fullName: 'Unknown',
                       memberSince: 'Unknown',
                       username: 'Unknown'
-                    }]
-      }
-    }
+                    }],
+      userPromos: []
+    };
+  }
+
   render () {
 
     console.log('testing this.state: ', this.state.userProfile[0])
@@ -52,13 +55,29 @@ export default class UserDetails extends React.Component {
             </div>
           </div>
         </div>
+
+        <div className="author-box">
+          <div className="row">
+            <h3 className="h3-responsive text-xs-center">Promotion Tracker</h3>
+            <hr />
+
+            <div className="col-xs-12" style={{"text-align":"center"}}>
+              {this.state.userPromos.map(promo =>
+                <PromoEntry promo={promo} />
+              )}
+            </div>
+
+          </div>
+        </div>
+
       </div>
       <EventList events = {this.state.userEvents}/>
     </div>
   </div>
     )
   }
- getUserData() {
+
+  getUserData() {
     $.ajax({
       url: '/userEvents',
       dataType: 'json',
@@ -104,8 +123,29 @@ export default class UserDetails extends React.Component {
     });
   }
 
+  getPromoData() {
+    $.ajax({
+      url: '/scores',
+      dataType: 'json',
+      type: 'GET',
+      success: (data) => {
+        console.log("PROMOS: ", data);
+        this.setState({
+          userPromos: data
+        });
+      },
+      error: (err, data) => {
+        console.error(err);
+      }
+    })
+  }
+
   componentDidMount(){
     this.getUserData();
+  }
+
+  componentWillMount(){
+    this.getPromoData();
   }
 
 }
